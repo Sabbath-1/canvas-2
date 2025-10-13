@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern E-commerce Search Bar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .demo-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .demo-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .demo-title p {
+            font-size: 1.1rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title svg {
+            color: #3b82f6;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 2px solid #e1e5e9;
+            border-radius: 50px;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+
+        .search-input-wrapper:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px 8px;
+            font-size: 16px;
+            background: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            color: #6b7280;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-button:hover {
+            color: #3b82f6;
+            background: #f3f4f6;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            margin-top: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .suggestions-header {
+            padding: 12px 16px;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 1px solid #f3f4f6;
+            background: #fafafa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clear-history {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 0.8rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .suggestion-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid #f9fafb;
+        }
+
+        .suggestion-item:hover {
+            background: #f3f4f6;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-text {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+
+        .suggestion-text mark {
+            background: #fef3cd;
+            color: #92400e;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .suggestion-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .suggestion-price {
+            font-weight: 600;
+            color: #059669;
+        }
+
+        .suggestion-rating {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            color: #f59e0b;
+        }
+
+        .search-loading, .no-results {
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .recent-searches {
+            margin-top: 1.5rem;
+        }
+
+        .recent-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .recent-tag {
+            background: #f3f4f6;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #4b5563;
+        }
+
+        .recent-tag:hover {
+            background: #e5e7eb;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .feature-icon {
+            color: #3b82f6;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 2rem 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .demo-title h1 {
+                font-size: 2rem;
+            }
+            
+            .search-section {
+                padding: 1.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .suggestion-meta {
+                flex-direction: column;
+                gap: 5px;
+                align-items: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ShopStyle</div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Products</a>
+                <a href="#">Categories</a>
+                <a href="#">Deals</a>
+                <a href="#">About</a>
+            </div>
+        </header>
+        
+        <div class="demo-title">
+            <h1>Modern E-commerce Search Bar</h1>
+            <p>A fully functional, modern search interface with autocomplete, product suggestions, and recent searches.</p>
+        </div>
+        
+        <div class="search-section">
+            <h2 class="section-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" 
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Product Search
+            </h2>
+            
+            <div class="search-container">
+                <form class="search-form" role="search">
+                    <div class="search-input-wrapper">
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search for products, brands, or categories..." 
+                            aria-label="Search products"
+                        >
+                        <button type="submit" class="search-button" aria-label="Submit search">
+                            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" 
+                                      stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Search Results Dropdown -->
+                <div class="search-results" id="searchResults">
+                    <!-- Results will appear here dynamically -->
+                </div>
+                
+                <div class="recent-searches">
+                    <div class="suggestions-header">
+                        <span>Recent Searches</span>
+                        <button class="clear-history">Clear</button>
+                    </div>
+                    <div class="recent-tags">
+                        <button class="recent-tag">running shoes</button>
+                        <button class="recent-tag">wireless headphones</button>
+                        <button class="recent-tag">yoga mat</button>
+                        <button class="recent-tag">backpack</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>
+                    <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M19.4 15C19.2669 15.3044 19.1337 15.6088 19.0005 15.9131C18.5296 16.9028 18.0587 17.8925 17.5878 18.8822C17.3076 19.4907 16.9094 20 16.292 20H7.70805C7.09058 20 6.69235 19.4907 6.41217 18.8822C5.94133 17.8925 5.47049 16.9028 4.99965 15.9131C4.86643 15.6088 4.73322 15.3044 4.60001 15C4.4668 14.6956 4.33359 14.3912 4.20038 14.0869C3.72954 13.0972 3.2587 12.1075 2.78786 11.1178C2.50768 10.5093 2.10945 10 1.49197 10H12H22.508C21.8906 10 21.4923 10.5093 21.2122 11.1178C20.7413 12.1075 20.2705 13.0972 19.7996 14.0869C19.6664 14.3912 19.5332 14.6956 19.4 15Z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    Smart Autocomplete
+                </h3>
+                <p>Real-time suggestions as you type, with product images, prices, and ratings for quick decision making.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>
+                    <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Recent Searches
+                </h3>
+                <p>Quick access to your recent searches with the ability to clear your history for privacy.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h3>
+                    <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 9H9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Product Filtering
+                </h3>
+                <p>Advanced filtering options to narrow down search results by category, price range, brand, and more.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Modern E-commerce Search Bar Demo | Designed for optimal user experience</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.search-input');
+            const resultsContainer = document.getElementById('searchResults');
+            const searchForm = document.querySelector('.search-form');
+            const recentTags = document.querySelectorAll('.recent-tag');
+            const clearHistoryBtn = document.querySelector('.clear-history');
+            
+            // Sample product data
+            const sampleProducts = [
+                { id: 1, name: "Running Shoes", category: "Footwear", price: "$89.99", rating: 4.5, image: "👟" },
+                { id: 2, name: "Wireless Headphones", category: "Electronics", price: "$129.99", rating: 4.7, image: "🎧" },
+                { id: 3, name: "Yoga Mat", category: "Fitness", price: "$29.99", rating: 4.3, image: "🧘" },
+                { id: 4, name: "Backpack", category: "Accessories", price: "$49.99", rating: 4.2, image: "🎒" },
+                { id: 5, name: "Smart Watch", category: "Electronics", price: "$199.99", rating: 4.6, image: "⌚" },
+                { id: 6, name: "Water Bottle", category: "Fitness", price: "$19.99", rating: 4.4, image: "💧" }
+            ];
+            
+            // Sample search suggestions
+            const sampleSuggestions = [
+                "running shoes for men",
+                "running shoes for women",
+                "running shoes nike",
+                "running shoes adidas",
+                "running shoes sale",
+                "running shoes with arch support"
+            ];
+            
+            let debounceTimeout;
+            
+            // Event listeners
+            searchInput.addEventListener('input', handleSearchInput);
+            searchInput.addEventListener('focus', showRecentSearches);
+            searchForm.addEventListener('submit', handleSearchSubmit);
+            
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-container')) {
+                    hideResults();
+                }
+            });
+            
+            recentTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    searchInput.value = this.textContent;
+                    searchInput.focus();
+                    performSearch(this.textContent);
+                });
+            });
+            
+            clearHistoryBtn.addEventListener('click', function() {
+                document.querySelector('.recent-tags').innerHTML = '<p style="padding: 10px; color: #6b7280;">Recent searches cleared</p>';
+            });
+            
+            // Functions
+            function handleSearchInput(e) {
+                clearTimeout(debounceTimeout);
+                const query = e.target.value.trim();
+                
+                if (query.length === 0) {
+                    showRecentSearches();
+                    return;
+                }
+                
+                if (query.length < 2) {
+                    hideResults();
+                    return;
+                }
+                
+                showLoading();
+                
+                debounceTimeout = setTimeout(() => {
+                    fetchSuggestions(query);
+                }, 300);
+            }
+            
+            function handleSearchSubmit(e) {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (query) {
+                    performSearch(query);
+                }
+            }
+            
+            function fetchSuggestions(query) {
+                // Simulate API call delay
+                setTimeout(() => {
+                    const filteredProducts = sampleProducts.filter(product => 
+                        product.name.toLowerCase().includes(query.toLowerCase()) ||
+                        product.category.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    const filteredSuggestions = sampleSuggestions.filter(suggestion =>
+                        suggestion.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    displayResults(filteredProducts, filteredSuggestions, query);
+                }, 500);
+            }
+            
+            function displayResults(products, suggestions, query) {
+                if (products.length === 0 && suggestions.length === 0) {
+                    showNoResults();
+                    return;
+                }
+                
+                let html = '';
+                
+                // Add product results
+                if (products.length > 0) {
+                    html += '<div class="suggestions-header">Products</div>';
+                    products.forEach(product => {
+                        html += `
+                            <div class="suggestion-item" data-product-id="${product.id}">
+                                <div class="suggestion-text">
+                                    <div class="product-image">${product.image}</div>
+                                    <span>${highlightMatch(product.name, query)}</span>
+                                </div>
+                                <div class="suggestion-meta">
+                                    <span class="suggestion-price">${product.price}</span>
+                                    <span class="suggestion-rating">${'★'.repeat(Math.floor(product.rating))}${product.rating}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                // Add search suggestions
+                if (suggestions.length > 0) {
+                    html += '<div class="suggestions-header">Search Suggestions</div>';
+                    suggestions.forEach(suggestion => {
+                        html += `
+                            <div class="suggestion-item" data-search-term="${suggestion}">
+                                <div class="suggestion-text">
+                                    <span>${highlightMatch(suggestion, query)}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                resultsContainer.innerHTML = html;
+                resultsContainer.style.display = 'block';
+                
+                // Add click handlers
+                document.querySelectorAll('.suggestion-item[data-product-id]').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const productId = this.dataset.productId;
+                        const product = sampleProducts.find(p => p.id == productId);
+                        alert(`Redirecting to product: ${product.name}`);
+                        hideResults();
+                    });
+                });
+                
+                document.querySelectorAll('.suggestion-item[data-search-term]').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const term = this.dataset.searchTerm;
+                        searchInput.value = term;
+                        performSearch(term);
+                    });
+                });
+            }
+            
+            function highlightMatch(text, query) {
+                if (!query) return text;
+                const regex = new RegExp(`(${query})`, 'gi');
+                return text.replace(regex, '<mark>$1</mark>');
+            }
+            
+            function showLoading() {
+                resultsContainer.innerHTML = `
+                    <div class="search-loading">
+                        <div class="loading-spinner"></div>
+                        <span>Searching...</span>
+                    </div>
+                `;
+                resultsContainer.style.display = 'block';
+            }
+            
+            function showNoResults() {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <span>No results found. Try different keywords.</span>
+                    </div>
+                `;
+                resultsContainer.style.display = 'block';
+            }
+            
+            function showRecentSearches() {
+                // In a real app, this would load from localStorage
+                resultsContainer.innerHTML = `
+                    <div class="suggestions-header">Recent Searches</div>
+                    <div class="suggestion-item" data-search-term="running shoes">
+                        <div class="suggestion-text">
+                            <span>running shoes</span>
+                        </div>
+                    </div>
+                    <div class="suggestion-item" data-search-term="wireless headphones">
+                        <div class="suggestion-text">
+                            <span>wireless headphones</span>
+                        </div>
+                    </div>
+                    <div class="suggestion-item" data-search-term="yoga mat">
+                        <div class="suggestion-text">
+                            <span>yoga mat</span>
+                        </div>
+                    </div>
+                `;
+                resultsContainer.style.display = 'block';
+                
+                // Add click handlers
+                document.querySelectorAll('.suggestion-item[data-search-term]').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const term = this.dataset.searchTerm;
+                        searchInput.value = term;
+                        performSearch(term);
+                    });
+                });
+            }
+            
+            function hideResults() {
+                resultsContainer.style.display = 'none';
+            }
+            
+            function performSearch(query) {
+                // In a real app, this would redirect to search results page
+                alert(`Performing search for: "${query}"\n\nIn a real e-commerce site, this would redirect to the search results page.`);
+                hideResults();
+                
+                // Add to recent searches (in a real app, this would save to localStorage)
+                if (!document.querySelector(`.recent-tag:contains('${query}')`)) {
+                    const recentTagsContainer = document.querySelector('.recent-tags');
+                    const newTag = document.createElement('button');
+                    newTag.className = 'recent-tag';
+                    newTag.textContent = query;
+                    newTag.addEventListener('click', function() {
+                        searchInput.value = this.textContent;
+                        searchInput.focus();
+                        performSearch(this.textContent);
+                    });
+                    recentTagsContainer.prepend(newTag);
+                    
+                    // Limit to 5 recent searches
+                    if (recentTagsContainer.children.length > 5) {
+                        recentTagsContainer.removeChild(recentTagsContainer.lastChild);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
