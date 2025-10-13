@@ -202,7 +202,7 @@ nav ul li a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, .35);
     opacity: 0;
     visibility: hidden;
     z-index: 989;
@@ -250,7 +250,7 @@ nav ul li a:hover {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 .hero-text h1 span {
-    color: var(--color-primary);
+    color: #f44d34;
 }
 .menu-article {
     padding: 2rem 0;
@@ -310,14 +310,14 @@ nav ul li a:hover {
     border-radius: 10px;
     box-shadow: var(--shadow);
     overflow: hidden;
-    min-width: 300px;
-    max-width: 160px;
+    max-width: 280px;
+    min-width: 160px;
     flex: 0 0 auto;
     transition: var(--transition);
 }   
 .food-menu .dish-container:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.015);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 .food-menu .dish-img img {
     width: 100%;
@@ -471,8 +471,12 @@ nav ul li a:hover {
     transition: var(--transition);
 }
 .services .service-card:hover {
-    transform: translateY(-15px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+
+    @media (width < 500px) {
+        transform: translateY(-5px);
+    }
 }
 .services .service-card img {
     width: 50px;
@@ -576,13 +580,13 @@ nav ul li a:hover {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, .6);
+    background-color: rgba(255, 255, 255, .4);
     width: 35px;
     height: 35px;
     border-radius: 50%;
     z-index: 40;
     border: 1px solid #eee;
-    color: #333;
+    color: #111; font-size: 1.4rem;
     transition: var(--transition);
     cursor: pointer;
     display: flex;

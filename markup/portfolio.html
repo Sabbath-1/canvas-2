@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio.musa</title>
+    <title>Quamina Studios</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 </head>
 <body>
     <nav class="nav" id="nav">
-        <div class="page-header"><strong>donMusa dev</strong></div>
+        <div class="page-header"><strong>Quamina Studios</strong></div>
         <button class="hamburger" id="hamburger">
             <span></span>
         </button>
@@ -70,41 +70,41 @@
         <div class="container2">
             <header>
                 <h2>My Works</h2>
-                <p>A showcase of my recent projects and contributions.</p>
+                <p>A showcase of my recent projects</p>
             </header>
             <div class="projects-container">
                 <div class="card">
                     <div class="img-container">
-                        <a href="../markup/musaChops.html"><img src="../img/foodUsing.png" alt="work 1"></a>
+                        <a href="musaChops.html"><img src="../img/foodUsing.png" alt="work 1"></a>
                         <div class="img-overlay"></div>
                     </div>
                     <div class="card-text">
                         <h3>musaChops</h3>
                         <p>A food restaurant landing page</p>
-                        <a href="../markup/musaChops.html">View Project →</a>
+                        <a href="musaChops.html" target="_blank">View Project →</a>
                     </div>
                 </div>
                 <div class="card">
                     <div class="img-container">
-                        <a href="../markup/allInOneBarca.html"><img src="../img/barcaUsing.png" alt="picture of my blog site"></a>
+                        <a href="allInOneBarca.html"><img src="../img/barcaUsing.png" alt="picture of my blog site"></a>
                         <div class="img-overlay"></div>
                     </div>
                     <div class="card-text">
                         <h3>Barca4L</h3>
                         <p>A football blog</p>
-                        <a href="../markup/allInOneBarca.html">View Project →</a>
+                        <a href="allInOneBarca.html" target="_blank">View Project →</a>
                     </div>
                 </div>
 
                  <div class="card">
                     <div class="img-container">
-                        <a href="../markup/portfolio.html"><img src="../img/portfolioUsing.png" alt="a picture of my portfolio site"></a>
+                        <a href="index.html"><img src="../img/portfolioUsing.png" alt="a picture of my portfolio site"></a>
                         <div class="img-overlay"></div>
                     </div>
                     <div class="card-text">
-                        <h3>donMusa dev</h3>
+                        <h3>Quamina Studios</h3>
                         <p>A personal portofolio website</p>
-                        <a href="../markup/portfolio.html">View Project →</a>
+                        <a href="index.html">View Project →</a>
                     </div>
                 </div>
             </div>
@@ -123,47 +123,48 @@
                         <div class="icon"><i>📩</i></div>
                         <div class="contact-desc">
                             <h4>Email</h4>
-                            <p>donmusa@gmail.com</p>
+                            <p>quaminastudios@gmail.com</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <div class="icon"><i>📱</i></div>
                         <div class="contact-desc">
                             <h4>Phone</h4>
-                            <p>0542016816</p>
+                            <p>(233) 54 2016 816</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <div class="icon"><i>📍</i></div>
                         <div class="contact-desc">
                             <h4>Location</h4>
-                            <p>Sunyani, Ghana</p>
+                            <p>Accra, Ghana</p>
                         </div>
                     </div>
                     <div class="socials">
                         <h4>Follow Me</h4>
                         <div class="socials-links">
                             <a href="#"><img src="../img/whatsapp-logo.svg" alt="whatsapp me"></a>
-                            <a href="#"><img src="../img/twitter-logo.svg" alt="follow me on twitter"></a>
-                            <a href="#"><img src="../img/instagram-logo.svg" alt="follow me on ig"></a>
+                            <a href="https://x.com/home" target="_blank"><img src="../img/twitter-logo.svg" alt="follow me on twitter"></a>
+                            <a href="https://www.instagram.com/donmusa_dev\" target="_blank"><img src="../img/instagram-logo.svg" alt="follow me on ig"></a>
                         </div>
                     </div>
                 </div>
                 <div class="send-message">
                     <h3>Send a Message</h3>
-                    <form action="#">
-                        <label>Full Name<input required type="text" placeholder="Your name"></label>
-                        <label>Email Address <input required type="email" placeholder="example@email.com"></label>
-                        <label>Subject <input required type="text" placeholder="Project Inquiry"></label>
-                        <label>Message <textarea required name="message" rows="8" placeholder="Tell me about your project"></textarea></label>
-                        <button type="submit">Send Message <span><i>➡️</i></span></button>
+                    <form name="message-form" method="post" netlify netlify-honeypot="bot-field" action="/thank-you">
+                        <p class="hidden"><label> Not to be filled <input type="text" name="bot-field"></label></p>
+                        <label>Full Name<input required name="name" type="text" placeholder="Your name"></label>
+                        <label>Email Address <input required name="email" type="email" placeholder="example@email.com"></label>
+                        <label>Subject <input required name="subject" type="text" placeholder="Project Inquiry"></label>
+                        <label>Message <textarea required name="message" rows="8" placeholder="Tell me about your project..."></textarea></label>
+                        <button type="submit">Send Message ⇛</span></button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
     <footer class="footer">
-        <p>© 2025 donMusa. Built with ❤️</p>
+        <p>© 2025 quaminastudios. Built with ❤️</p>
     </footer>
 </body>
 </html>

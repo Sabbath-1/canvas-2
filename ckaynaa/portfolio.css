@@ -5,8 +5,8 @@
     --clr-border:#ccc; --clr-shadow:rgba(0,0,0,0.1); --border-line: linear-gradient(to right, transparent,rgba(0,0,0,.8) 30%, rgba(0,0,0,.8) 70%, transparent)100; 
 }
 [data-theme="dark"] {
-    --clr-bg-primary:#101010; --clr-bg-secondary:#1a1a1a; --clr-accent:#ffffff;
-    --clr-txt-main:#4ecdc4; --clr-txt-secondary:#6c63ffdd;
+    --clr-bg-primary:#101010; --clr-bg-secondary:#1a1a1a; --clr-accent:#f9f9f9;
+    --clr-txt-main:#4ecdc4; --clr-txt-secondary:#6c63ff;
     --clr-surface:#2d2d2d; --clr-card-bg:#212121; --clr-text-primary:#e0e0e0; --clr-text-secondary:#b0b0b0;
     --clr-border:#404040; --clr-shadow:rgba(0,0,0,0.3); --border-line: linear-gradient(to right, transparent,rgba(255,255,255,.8) 30%, rgba(255,255,255,.8) 70%, transparent)100; 
 }
@@ -23,15 +23,20 @@ img {
     width:80%; max-width:1200px; margin:0 auto;
 }
 .nav {
-    display:flex; justify-content:space-between; align-items:center; position:fixed; top:0; left:0; right:0; z-index:1000;
-    background-color:var(--clr-bg-primary); padding:1rem 3rem;
+    display:flex; justify-content: space-between; align-items: center; position: fixed; top:0; left:0; right:0; z-index:1000;
+    background-color:var(--clr-bg-primary); padding:1rem 3rem; 
 
-    @media (width < 665px) {}
+    @media (width < 500px) {
+        padding:1rem 2rem;
+    }
 }
 .nav > .page-header {
     font-size:1.5rem; font-weight:700; color:var(--clr-txt-main); font-family:'Montserrat', sans-serif; cursor:pointer; z-index: 1050;
 
-    @media (width < 665px) {
+    @media (width < 760px) {
+        font-size:1.4rem;
+    }
+    @media (width < 500px) {
         font-size:1.3rem;
     }
 }   
@@ -40,7 +45,7 @@ img {
     background:transparent; border:none; outline:1px solid transparent; border-radius:50%; gap:.4rem;  right:3rem; cursor:pointer;
     transition:all .3s ease-in-out;
 
-    @media (width < 665px) {
+    @media (width < 760px) {
         display:flex; z-index:1000;
     }
 }
@@ -71,14 +76,14 @@ img {
 .nav .info {
     width: 60%;
 
-    @media (width < 665px) {
+    @media (width < 760px) {
         width: auto;
     }
 }
 .nav ul{
     display:flex; gap:2rem; align-items:center; z-index:999; 
 
-    @media (width < 665px) {
+    @media (width < 760px) {
         flex-direction:column; margin-top:2rem; position:fixed; top:0; right:0; background-color:var(--clr-bg-primary);  padding:4rem 3rem; 
         width: 60%; max-width: 300px; min-height: 100dvh; z-index: 999; display: none; 
     }
@@ -103,7 +108,7 @@ img {
     position: relative; margin-left: auto;
 
 
-    @media (width < 665px) {
+    @media (width < 760px) {
         margin-left: auto; margin-top: auto;
     }
 }
@@ -161,9 +166,9 @@ img {
     display:flex; gap:1.5rem; margin-top:1.5rem; text-align: center;
 }
 .header .header-btn a {
-    text-decoration:none; color:var(--clr-txt-secondary); background:var(--clr-accent); font-size:1rem; padding:.75em 1.5em;
-    border:none; outline:1px solid var(--clr-accent); font-weight:600; border-radius:5vw; transition:all .3s ease-in;
-    display:flex; justify-content:center; align-items:center;
+    text-decoration: none; color: #555; background:var(--clr-accent); font-size:1rem; padding:.75em 1.5em;
+    border: none; outline: 1px solid var(--clr-accent); font-weight:600; border-radius:5vw; transition:all .3s ease-in;
+    display: flex; justify-content: center; align-items:center;
 }
 .header .header-btn a:hover {
     transform:translateY(-8px); background-color:var(--clr-accent);
@@ -333,7 +338,7 @@ img {
     font-size:1rem; color:var(--clr-text-primary); margin-bottom:.95rem; font-family:'Montserrat', sans-serif;
 }
 .contact .container3 .contact-grid {
-    display:grid; grid-template-columns:1fr 1fr; gap:50px; min-width:100%; 
+    display: grid; grid-template-columns: 1fr 1fr; gap: 50px; min-width: 100%; 
 
     @media (width < 750px) {
         grid-template-columns:1fr; gap:30px;
@@ -342,6 +347,10 @@ img {
 .contact .container3 .contact-grid .contact-info {
     background-color:var(--clr-card-bg); border-radius:1vw; display:flex; flex-direction:column; padding:2.5rem; justify-content:center; gap:2rem;
     height:fit-content;
+
+    @media (width < 500px) {
+        padding:2rem 1rem;
+    }
 }
 .contact .container3 .contact-grid .contact-info h3 {
     font-family:'Montserrat' sans-serif; color:var(--clr-txt-secondary); margin-bottom:1rem; font-size:1.5rem;
@@ -380,6 +389,10 @@ img {
 .contact .container3 .contact-grid .send-message {
     background-color:var(--clr-card-bg); border-radius:1vw; display:flex; flex-direction:column; justify-content:center; gap:1rem;
     padding:2.5rem;
+
+    @media (width < 500px) {
+        padding:2rem 1rem;
+    }
 }
 .contact .container3 .contact-grid .send-message h3 {
     font-family:'Montserrat' sans-serif; color:var(--clr-txt-secondary); margin-bottom:1rem; font-size:1.5rem;
@@ -387,7 +400,10 @@ img {
 .contact .container3 .contact-grid .send-message form {
     display:flex; flex-direction:column; gap:1.7rem;
 }
-.contact .container3 .contact-grid .send-message form label input, .contact .container3 .contact-grid .send-message form label textarea{
+.contact .container3 .contact-grid .send-message form .hidden {
+    display: none;
+}
+.contact .container3 .contact-grid .send-message form label input, .contact .container3 .contact-grid .send-message form label textarea {
     display:block; padding:12px 10px; height:auto; width:100%; border:1px solid var(--clr-border); border-radius:4px; font-family:inherit; font-size:1rem;
     margin-top:.5rem; transition:all .3s ease-in-out; resize:vertical; background-color:var(--clr-bg-secondary); color:var(--clr-text-primary);
 }
