@@ -1,401 +1,152 @@
-import React, { useState, useEffect } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Site Login - Secure Access</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a dark, professional aesthetic */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark charcoal/blue background */
+        }
+        .login-card {
+            /* Subtle blue gradient for the card background */
+            background: linear-gradient(145deg, rgba(20, 25, 30, 0.95), rgba(10, 15, 20, 0.95));
+            border: 1px solid rgba(30, 40, 50, 0.9);
+        }
+        .input-field {
+            /* Subtle dark input background with border animation on focus */
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            transition: border-color 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: #58a6ff; /* Primary blue glow */
+            outline: none;
+            box-shadow: 0 0 0 1px #58a6ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-// ECommerceDemo.jsx
-// Single-file React component demo for an e-commerce front-end.
-// Designed to be dropped into a React project (e.g., Vite or Create React App) as App.jsx.
-
-const SAMPLE_PRODUCTS = [
-  {
-    id: "p1",
-    title: "Classic White T-Shirt",
-    price: 19.99,
-    category: "Apparel",
-    image: "https://images.unsplash.com/photo-1520975914110-5b8d3d0f6a88?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1",
-    rating: 4.6,
-    description:
-      "Soft, breathable cotton tee. A wardrobe staple that pairs with everything.",
-  },
-  {
-    id: "p2",
-    title: "Slim Fit Jeans",
-    price: 49.99,
-    category: "Apparel",
-    image: "https://images.unsplash.com/photo-1520975660905-7f36e8d5f1c7?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2",
-    rating: 4.4,
-    description: "Comfortable stretch denim with a modern slim silhouette.",
-  },
-  {
-    id: "p3",
-    title: "Wireless Headphones",
-    price: 89.99,
-    category: "Electronics",
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3",
-    rating: 4.7,
-    description: "Noise-cancelling Bluetooth headphones with long battery life.",
-  },
-  {
-    id: "p4",
-    title: "Ceramic Coffee Mug",
-    price: 12.5,
-    category: "Home",
-    image: "https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=4",
-    rating: 4.3,
-    description: "A cozy mug for your daily coffee. Dishwasher safe.",
-  },
-  {
-    id: "p5",
-    title: "Desk Lamp",
-    price: 34.0,
-    category: "Home",
-    image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5",
-    rating: 4.5,
-    description: "Adjustable LED desk lamp with touch controls.",
-  },
-];
-
-function useLocalStorageState(key, defaultValue) {
-  const [state, setState] = useState(() => {
-    try {
-      const raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : defaultValue;
-    } catch (e) {
-      return defaultValue;
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(key, JSON.stringify(state));
-    } catch (e) {}
-  }, [key, state]);
-
-  return [state, setState];
-}
-
-export default function ECommerceDemo() {
-  const [products] = useState(SAMPLE_PRODUCTS);
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("All");
-  const [selected, setSelected] = useState(null); // product detail modal
-  const [cart, setCart] = useLocalStorageState("demo_cart_v1", []);
-  const [showCart, setShowCart] = useState(false);
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(null);
-
-  const categories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
-
-  function addToCart(product, qty = 1) {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.id === product.id);
-      if (existing) {
-        return prev.map((i) => (i.id === product.id ? { ...i, qty: i.qty + qty } : i));
-      }
-      return [...prev, { id: product.id, title: product.title, price: product.price, qty }];
-    });
-    setShowCart(true);
-  }
-
-  function updateQty(id, qty) {
-    setCart((prev) => prev.map((i) => (i.id === id ? { ...i, qty: Math.max(1, qty) } : i)));
-  }
-
-  function removeFromCart(id) {
-    setCart((prev) => prev.filter((i) => i.id !== id));
-  }
-
-  function clearCart() {
-    setCart([]);
-  }
-
-  function placeOrder(shipping) {
-    // demo: fake order placement
-    const id = `ORDER-${Math.random().toString(36).slice(2, 9).toUpperCase()}`;
-    setOrderSuccess({ id, shipping, items: cart, total: cartTotal() });
-    clearCart();
-    setCheckoutOpen(false);
-    setShowCart(false);
-  }
-
-  function cartTotal() {
-    return cart.reduce((s, i) => s + i.price * i.qty, 0);
-  }
-
-  const filtered = products.filter((p) => {
-    if (category !== "All" && p.category !== category) return false;
-    if (!query) return true;
-    const q = query.toLowerCase();
-    return p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
-  });
-
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="bg-white shadow-sm sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="text-2xl font-bold">Shoply</div>
-            <div className="text-sm text-slate-500">Demo e‑commerce front-end</div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="hidden md:block">
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search products..."
-                className="border rounded-md px-3 py-2 w-64 placeholder:text-slate-400"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="border rounded-md px-2 py-2"
-              >
-                {categories.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-
-              <button
-                onClick={() => setShowCart((s) => !s)}
-                className="relative px-3 py-2 bg-slate-800 text-white rounded-md"
-              >
-                Cart
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 text-xs">
-                  {cart.reduce((s, i) => s + i.qty, 0)}
-                </span>
-              </button>
-            </div>
-          </div>
+    <div id="login-container" class="w-full max-w-sm">
+        
+        <!-- Header/Logo Area -->
+        <div class="text-center mb-10">
+            <!-- Replace this SVG with your official logo -->
+            <svg class="w-12 h-12 text-[#58a6ff] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+            <h1 class="text-3xl font-extrabold text-white">
+                Secure Access Portal
+            </h1>
+            <p class="text-sm text-gray-400 mt-1">
+                Official login for internal services
+            </p>
         </div>
-      </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <section className="grid md:grid-cols-4 gap-6">
-          <aside className="md:col-span-1 bg-white p-4 rounded-lg shadow-sm">
-            <h3 className="font-semibold mb-3">Quick Filters</h3>
-            <div className="flex flex-col gap-2">
-              {categories.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCategory(c)}
-                  className={`text-left px-3 py-2 rounded ${category === c ? "bg-slate-800 text-white" : "bg-slate-50"}`}
-                >
-                  {c}
+        <!-- Login Card -->
+        <div class="login-card p-8 rounded-xl shadow-2xl space-y-6">
+
+            <div id="message-box" class="hidden p-3 rounded-lg text-sm transition duration-300"></div>
+
+            <form id="login-form">
+                
+                <!-- Email Input -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="name@yourcompany.com"
+                        class="input-field w-full p-3 rounded-lg text-sm">
+                </div>
+
+                <!-- Password Input -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="••••••••"
+                        class="input-field w-full p-3 rounded-lg text-sm">
+                </div>
+
+                <!-- Action Button -->
+                <button type="submit" id="login-button"
+                    class="w-full bg-[#58a6ff] hover:bg-[#4a8fe0] text-gray-900 font-semibold p-3 rounded-lg transition duration-200 shadow-md focus:ring-4 focus:ring-[#58a6ff]/50 mt-4">
+                    Log In
                 </button>
-              ))}
+            </form>
+
+            <!-- Forgot Password Link -->
+            <div class="text-center pt-2">
+                <a href="#" class="text-sm text-gray-500 hover:text-[#58a6ff] transition duration-200">
+                    Forgot Password?
+                </a>
             </div>
-
-            <div className="mt-6">
-              <h4 className="font-medium">About this demo</h4>
-              <p className="text-sm text-slate-500 mt-2">Cart persists to localStorage. Checkout is simulated.</p>
-            </div>
-          </aside>
-
-          <div className="md:col-span-3">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Products</h2>
-              <div className="text-sm text-slate-500">Showing {filtered.length} product(s)</div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((p) => (
-                <article key={p.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                  <div className="h-44 bg-slate-100 flex items-center justify-center overflow-hidden">
-                    <img src={p.image} alt={p.title} className="h-full w-full object-cover" />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-medium text-lg">{p.title}</h3>
-                    <p className="text-sm text-slate-500 mt-1">{p.category} • ⭐ {p.rating}</p>
-                    <div className="mt-3 flex items-center justify-between">
-                      <div className="text-lg font-semibold">${p.price.toFixed(2)}</div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setSelected(p)}
-                          className="px-3 py-1 border rounded-md text-sm"
-                        >
-                          View
-                        </button>
-                        <button
-                          onClick={() => addToCart(p, 1)}
-                          className="px-3 py-1 rounded-md bg-slate-800 text-white text-sm"
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* Cart sidebar */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl transform transition-transform duration-300 z-30 ${
-          showCart ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="p-4 flex items-center justify-between border-b">
-          <h3 className="font-semibold">Your Cart</h3>
-          <div className="flex items-center gap-2">
-            <button onClick={() => clearCart()} className="text-sm text-red-500">
-              Clear
-            </button>
-            <button onClick={() => setShowCart(false)} className="px-3 py-1 border rounded-md">
-              Close
-            </button>
-          </div>
         </div>
 
-        <div className="p-4 flex-1 overflow-y-auto h-[70vh]">
-          {cart.length === 0 ? (
-            <div className="text-slate-500">Your cart is empty.</div>
-          ) : (
-            cart.map((i) => (
-              <div key={i.id} className="flex items-center gap-3 py-3 border-b">
-                <div className="flex-1">
-                  <div className="font-medium">{i.title}</div>
-                  <div className="text-sm text-slate-500">${i.price.toFixed(2)} • Qty</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={i.qty}
-                    min={1}
-                    onChange={(e) => updateQty(i.id, Number(e.target.value))}
-                    className="w-16 border rounded-md px-2 py-1"
-                  />
-                  <div className="w-20 text-right font-semibold">${(i.price * i.qty).toFixed(2)}</div>
-                  <button onClick={() => removeFromCart(i.id)} className="text-sm text-red-500">
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+        <!-- Footer Note -->
+        <p class="text-xs text-gray-600 text-center mt-6">
+            © 2024 Your Official Site. All rights reserved.
+        </p>
 
-        <div className="p-4 border-t">
-          <div className="flex items-center justify-between mb-3">
-            <div className="text-sm text-slate-500">Total</div>
-            <div className="text-lg font-semibold">${cartTotal().toFixed(2)}</div>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setCheckoutOpen(true)}
-              disabled={cart.length === 0}
-              className="flex-1 px-4 py-2 rounded-md bg-emerald-600 text-white disabled:opacity-50"
-            >
-              Checkout
-            </button>
-            <button onClick={() => setShowCart(false)} className="px-4 py-2 border rounded-md">
-              Continue Shopping
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Product modal */}
-      {selected && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-lg max-w-3xl w-full overflow-hidden shadow-lg">
-            <div className="grid md:grid-cols-2">
-              <div className="h-80 md:h-full bg-slate-100 flex items-center justify-center overflow-hidden">
-                <img src={selected.image} alt={selected.title} className="h-full w-full object-cover" />
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold">{selected.title}</h3>
-                <p className="text-sm text-slate-500 mt-1">{selected.category} • ⭐ {selected.rating}</p>
-                <p className="mt-4 text-slate-700">{selected.description}</p>
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="text-2xl font-bold">${selected.price.toFixed(2)}</div>
-                  <div className="flex gap-2">
-                    <button onClick={() => addToCart(selected, 1)} className="px-4 py-2 rounded-md bg-slate-800 text-white">
-                      Add to cart
-                    </button>
-                    <button onClick={() => setSelected(null)} className="px-4 py-2 border rounded-md">
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Checkout modal */}
-      {checkoutOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-lg">
-            <h3 className="text-xl font-semibold mb-3">Checkout</h3>
-            <CheckoutForm onCancel={() => setCheckoutOpen(false)} onPlace={placeOrder} total={cartTotal()} />
-          </div>
-        </div>
-      )}
-
-      {/* Order success toast/modal */}
-      {orderSuccess && (
-        <div className="fixed bottom-6 right-6 z-50 bg-white p-4 rounded-lg shadow-lg">
-          <div className="font-semibold">Order placed!</div>
-          <div className="text-sm text-slate-600">{orderSuccess.id} • Total ${orderSuccess.total.toFixed(2)}</div>
-          <div className="mt-2 flex gap-2">
-            <button onClick={() => setOrderSuccess(null)} className="px-3 py-1 border rounded-md">
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      <footer className="mt-12 py-6 text-center text-sm text-slate-500">
-        Built with ❤️ — Demo storefront
-      </footer>
     </div>
-  );
-}
 
-function CheckoutForm({ onCancel, onPlace, total }) {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
+    <script>
+        const form = document.getElementById('login-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('login-button');
+        const messageBox = document.getElementById('message-box');
 
-  function submit(e) {
-    e.preventDefault();
-    // Very light validation
-    if (!name || !address || !email) return alert("Please complete all fields (demo).");
-    onPlace({ name, address, email });
-  }
+        // Function to display messages (instead of alert())
+        function showMessage(text, isError = false) {
+            messageBox.textContent = text;
+            messageBox.classList.remove('hidden', 'bg-red-900/30', 'text-red-300', 'bg-green-900/30', 'text-green-300');
+            
+            if (isError) {
+                messageBox.classList.add('bg-red-900/30', 'text-red-300');
+            } else {
+                messageBox.classList.add('bg-green-900/30', 'text-green-300');
+            }
+        }
 
-  return (
-    <form onSubmit={submit} className="space-y-3">
-      <div>
-        <label className="block text-sm">Full name</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} className="w-full border rounded-md px-3 py-2" />
-      </div>
-      <div>
-        <label className="block text-sm">Shipping address</label>
-        <input value={address} onChange={(e) => setAddress(e.target.value)} className="w-full border rounded-md px-3 py-2" />
-      </div>
-      <div>
-        <label className="block text-sm">Email</label>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border rounded-md px-3 py-2" />
-      </div>
-      <div className="flex items-center justify-between mt-2">
-        <div className="text-sm">Total: <span className="font-semibold">${total.toFixed(2)}</span></div>
-        <div className="flex gap-2">
-          <button type="button" onClick={onCancel} className="px-3 py-2 border rounded-md">
-            Cancel
-          </button>
-          <button type="submit" className="px-4 py-2 bg-emerald-600 text-white rounded-md">
-            Place order
-          </button>
-        </div>
-      </div>
-    </form>
-  );
-}
+        // Simple login simulation function
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            loginButton.disabled = true;
+            loginButton.textContent = 'Authenticating...';
+            messageBox.classList.add('hidden'); // Hide previous message
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            // Simulate network delay
+            setTimeout(() => {
+                
+                if (email === "admin@test.com" && password === "password123") {
+                    // Success Case
+                    showMessage('Login successful! Redirecting to dashboard...', false);
+                } else if (email && password.length < 5) {
+                    // Simulated validation error
+                    showMessage('Password must be at least 8 characters long.', true);
+                } else {
+                    // General failure
+                    showMessage('Login failed. Please check your email and password.', true);
+                }
+
+                loginButton.disabled = false;
+                loginButton.textContent = 'Log In';
+
+            }, 1500); // 1.5 second delay
+        });
+
+        // Set focus for better UX
+        window.onload = function() {
+            emailInput.focus();
+        };
+
+    </script>
+</body>
+</html>

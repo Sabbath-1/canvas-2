@@ -1,0 +1,10 @@
+{
+    "editor.quickSuggestions": {
+        "other": "off",     
+        "comments": "off",  
+        "strings": "off"    
+    },
+
+    // 🛑 ADD THIS LINE 🛑
+    "editor.suggestOnTriggerCharacters": false 
+}
